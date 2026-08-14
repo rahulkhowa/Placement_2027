@@ -7,12 +7,9 @@ public:
               }
               return a[0]<b[0];
         });
-        vector<int>h;
-        for(vector<int>v:envelopes){
-            h.push_back(v[1]);
-        }
         vector<int>tail;
-        for(int v:h){
+        for(auto e:envelopes){
+            int v = e[1];
             auto it = lower_bound(tail.begin(),tail.end(),v);
             if(it==tail.end()){
                 tail.push_back(v);
