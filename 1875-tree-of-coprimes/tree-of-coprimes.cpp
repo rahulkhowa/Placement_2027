@@ -7,35 +7,20 @@ public:
             dfs1(v,u,adj,d+1,dep);
         }
     }
-void dfs2(int u, int par, int anc,
-          vector<vector<int>>& adj,
-          int val,
-          vector<int>& nums,
-          vector<int>& dep,
-          vector<int>& ans) {
-
-    // FIRST check the previous ancestor
-    if(anc != -1 && __gcd(nums[u], val) == 1) {
-
-        if(ans[u] == -1 || dep[anc] > dep[ans[u]]) {
-            ans[u] = anc;
+    void dfs2(int u,int par,int anc,vector<vector<int>>&adj,int val,vector<int>&nums,vector<int>&dep,vector<int>&ans){
+        if(anc!=-1 && __gcd(nums[u],nums[anc])==1){
+            if(ans[u]==-1 || dep[anc]>dep[ans[u]]){
+                ans[u]=anc;
+            }
+        }
+        if(nums[u]==val){
+            anc = u;
+        }
+        for(int v:adj[u]){
+            if(v==par) continue;
+            dfs2(v,u,anc,adj,val,nums,dep,ans);
         }
     }
-
-    // THEN current node becomes the ancestor for children
-    if(nums[u] == val) {
-        anc = u;
-    }
-
-    for(int v : adj[u]) {
-
-        if(v == par)
-            continue;
-
-        dfs2(v, u, anc, adj, val,
-             nums, dep, ans);
-    }
-}
     vector<int> getCoprimes(vector<int>& nums, vector<vector<int>>& edges) {
         int n = nums.size();
         vector<vector<int>>adj(n);
