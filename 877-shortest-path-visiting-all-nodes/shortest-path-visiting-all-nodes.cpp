@@ -10,20 +10,21 @@ public:
                 adj[graph[i][j]].push_back(i);
             }
         }
-        vector<vector<int>>vis(N,vector<int>(n,0));
-        queue<tuple<int,int,int>>q;
+        vector<vector<int>>dp(n,vector<int>(N,-1));
+        queue<pair<int,int>>q;
         for(int i=0;i<n;i++){
-            q.push({i,1<<i,0});
-            vis[1<<i][i]=1;
+            q.push({i,1<<i});
+            dp[i][1<<i]=0;
         }
         while(!q.empty()){
-            auto [u,mask,d] = q.front();q.pop();
+            auto [u,mask] = q.front();q.pop();
+            int d = dp[u][mask];
             if(mask == N-1) return d;
             for(int v:adj[u]){
                 int nmask = mask|(1<<v);
-                if(!vis[nmask][v]){
-                    vis[nmask][v]=1;
-                    q.push({v,nmask,d+1});
+                if(dp[v][nmask]==-1){
+                    dp[v][nmask]=d+1;
+                    q.push({v,nmask});
                 }
             }
         }
