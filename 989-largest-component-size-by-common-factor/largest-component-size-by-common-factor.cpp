@@ -65,10 +65,13 @@ public:
         vector<int>p = prime(nums);
         int N = 1e5; 
         DSU dsu(N+1);
-        set<int>st(nums.begin(),nums.end());
+        unordered_map<int,int>st;
+        for(int i=0;i<nums.size();i++){
+           st[nums[i]]=i;
+        }
         for(int x:p){
            for(int j=x;j<=N;j+=x){
-              if(st.find(j)!=st.end()){
+              if(st.count(j)){
                 dsu.unite(j,x);
               }
            }
