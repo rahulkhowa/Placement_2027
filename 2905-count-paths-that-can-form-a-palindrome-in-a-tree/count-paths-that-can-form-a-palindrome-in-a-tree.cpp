@@ -1,29 +1,30 @@
 class Solution {
 public:
     long long countPalindromePaths(vector<int>& parent, string s) {
-        int n = s.size();
+        int n = parent.size();
+        vector<int>mask(n,0);
         vector<vector<pair<int,int>>>adj(n);
         for(int i=1;i<n;i++){
-            adj[i].push_back({parent[i],s[i]-'a'});
+            // adj[i].push_back({parent[i],s[i]-'a'});
             adj[parent[i]].push_back({i,s[i]-'a'});
         }
-        unordered_map<int,long long>mask;
-        stack<tuple<int,int,int>>st;
+        queue<int>q;
+        q.push(0);
+        while(!q.empty()){
+           int u = q.front();q.pop();
+           for(auto [v,w]:adj[u]){
+              mask[v] = mask[u]^(1<<w);
+              q.push(v);
+           }
+        }
         long long ans=0;
-        st.push({0,-1,0});// u par mask
-        while(!st.empty()){
-            auto [u,par,m] = st.top();st.pop();
-            ans+=mask[m];
-            for(int i=0;i<26;i++){
-                int nm = m^(1<<i);
-                ans+=mask[nm];
-            }
-            mask[m]++;
-            for(auto [v,w]:adj[u]){
-                if(v==par) continue;
-                int nm = m^(1<<w);
-                st.push({v,u,nm});
-            }
+        unordered_map<int,long long>mp;
+        for(int i=0;i<n;i++){
+             ans+=mp[mask[i]];
+             for(int j=0;j<26;j++){
+                ans+=mp[mask[i]^(1<<j)];
+             }
+             mp[mask[i]]++;
         }
         return ans;
     }
