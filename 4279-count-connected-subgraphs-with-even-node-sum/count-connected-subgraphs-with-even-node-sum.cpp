@@ -27,22 +27,18 @@ public:
         int N = 1<<n;
         for(int mask=0;mask<N;mask++){
             DSU dsu(n);
-            set<int>st;
-            for(int i=0;i<n;i++){
-                if(mask&(1<<i)){
-                    st.insert(i);
-                }
-            }
             for(int j=0;j<m;j++){
                 int u = edges[j][0];
                 int v = edges[j][1];
-                if(st.contains(u) && st.contains(v)){
+                if((mask&(1<<u)) && (mask&(1<<v))){
                     dsu.unite(u,v);
                 }
             }
             unordered_map<int,int>mp;
-            for(auto it:st){
-               mp[dsu.find(it)]+=nums[it];
+            for(int it=0;it<n;it++){
+               if(mask&(1<<it)){
+                  mp[dsu.find(it)]+=nums[it];
+               }
             }
             if(mp.size()==1){
                 for(auto e:mp){
