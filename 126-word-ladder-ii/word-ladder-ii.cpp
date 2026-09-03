@@ -1,6 +1,6 @@
 class Solution {
 public:
-    void dfs(string &e,string &b,unordered_map<string,int>&mp,vector<string>&path,vector<vector<string>>&ans){
+    void dfs(string &e,string &b,map<string,int>&mp,vector<string>&path,vector<vector<string>>&ans){
         if(e==b){
             reverse(path.begin(),path.end());
             ans.push_back(path);
@@ -23,13 +23,13 @@ public:
     }
     vector<vector<string>> findLadders(string beginWord, string endWord, vector<string>& wordList) {
         vector<vector<string>>ans;
-        unordered_set<string>st;
+        set<string>st;
         for(auto it:wordList){
             st.insert(it);
         }
         if(!st.count(endWord)) return ans;
         st.erase(beginWord);
-        unordered_map<string,int>mp;
+        map<string,int>mp;
         int step = 1;
         mp[beginWord] = step;
         queue<string>q;
