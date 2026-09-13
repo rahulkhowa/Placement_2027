@@ -1,25 +1,26 @@
 class Solution {
 public:
     int lps(string s) {
-        string text1=s;
-        string text2=s;reverse(text2.begin(),text2.end());
-        vector<vector<int>>dp(text1.size()+1,vector<int>(text2.size()+1,0));
-        dp[0][0]=0;
-        for(int i=0;i<text1.size();i++){
-            for(int j=0;j<text2.size();j++){
-                if(text1[i]==text2[j]){
-                    dp[i+1][j+1]=1+dp[i][j];
+        int n = s.size();
+        if(n==0) return 0;
+        vector<vector<int>>dp(n,vector<int>(n,0));
+        for(int i=0;i<n;i++) dp[i][i]=1;
+        for(int len=2;len<=n;len++){
+            for(int i=0;i+len-1<n;i++){
+                int j = i+len-1;
+                if(s[i]==s[j]){
+                    dp[i][j]=max(dp[i][j],dp[i+1][j-1]+2);
                 }
                 else{
-                    dp[i+1][j+1]=max(dp[i][j+1],dp[i+1][j]);
+                    dp[i][j]=max(dp[i+1][j],dp[i][j-1]);
                 }
             }
         }
-        return dp[text1.size()][text2.size()];
+        return dp[0][n-1];
     }
     bool isPal(string &s){
     int l=0,r=s.size()-1;
-    while(l<r){
+    while(l<=r){
         if(s[l]!=s[r]) return false;
         l++;
         r--;
