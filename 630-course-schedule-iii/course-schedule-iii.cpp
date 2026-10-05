@@ -15,7 +15,7 @@ public:
             int l = courses[i][1];
             currt+=d;
             q.push({d,l});
-            if(currt>l){
+            while(!q.empty() && currt>l){
                currt-=q.top().first;
                q.pop();
             }
